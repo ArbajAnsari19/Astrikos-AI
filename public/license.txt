@@ -1,0 +1,11 @@
+Model Information:
+* title:	Planta de produção de combustíveis sintéticos.
+* source:	https://sketchfab.com/3d-models/planta-de-producao-de-combustiveis-sinteticos-e362dded720b465083b722dd0d0ceb7e
+* author:	Gustavo A. Souza - RA 817121088 (https://sketchfab.com/osouzag)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Planta de produção de combustíveis sintéticos." (https://sketchfab.com/3d-models/planta-de-producao-de-combustiveis-sinteticos-e362dded720b465083b722dd0d0ceb7e) by Gustavo A. Souza - RA 817121088 (https://sketchfab.com/osouzag) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

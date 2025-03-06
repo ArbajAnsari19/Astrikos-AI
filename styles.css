@@ -1,0 +1,422 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap');
+
+/* Black and white theme with minimal accent colors */
+:root {
+  --bg-primary: #000000;
+  --bg-secondary: rgba(10, 10, 10, 0.85);
+  --text-primary: #ffffff;
+  --text-secondary: #aaaaaa;
+  --border-primary: #ffffff;
+  --glow-primary: rgba(255, 255, 255, 0.3);
+  --grid-color: rgba(255, 255, 255, 0.05);
+  --success-color: #00ff66;
+  --warning-color: #ff3333;
+  --caution-color: #ffcc00;
+  --line-color: #ffffff;
+  --panel-dark: rgba(0, 0, 0, 0.85);
+}
+
+/* Ensure the Three.js canvas spans the full screen */
+canvas#draw {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+}
+
+/* Container overlay for dashboard elements */
+.container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  z-index: 10;
+  color: var(--text-primary);
+  justify-content: space-between;
+  font-family: 'Orbitron', sans-serif;
+  padding: 20px;
+  box-sizing: border-box;
+  pointer-events: none; /* Allow clicking through to the 3D scene */
+}
+
+/* Left and Right dashboard boxes */
+.left-box, .right-box {
+  width: 22vw;
+  background: var(--panel-dark);
+  border: 1px solid var(--border-primary);
+  border-radius: 5px;
+  padding: 15px;
+  box-shadow: 0 0 15px var(--glow-primary);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 95vh;
+  overflow-y: auto;
+  backdrop-filter: blur(5px);
+  
+  /* Initial positions for slide-in animation */
+  transform: translateX(-200%); /* Left box starts completely offscreen */
+}
+
+.right-box {
+  transform: translateX(200%); /* Right box starts completely offscreen */
+}
+
+/* Add transition to make the movement smoother */
+.left-box, .right-box {
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: auto;
+}
+
+/* Scanning effect line at top */
+.left-box::before, .right-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--text-primary), transparent);
+  animation: scan 2s linear infinite;
+}
+
+@keyframes scan {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Typography styling */
+.left-box h2, .right-box h2 {
+  font-size: 1.2rem;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+  padding-bottom: 5px;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-primary);
+}
+
+/* Chart containers to maintain aspect ratio */
+.chart-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 40%; /* Reduced from 60% */
+  margin-bottom: 10px;
+  border: 1px solid var(--border-primary);
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0 0 10px var(--glow-primary);
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/* Add futuristic scan effect to charts */
+.chart-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.05), transparent);
+  z-index: 1;
+  animation: chartScan 3s infinite;
+  pointer-events: none;
+}
+
+@keyframes chartScan {
+  0% { left: -50%; }
+  100% { left: 150%; }
+}
+
+/* Small chart containers */
+.small-chart-container {
+  position: relative;
+  width: 48%;
+  padding-bottom: 32%; /* Reduced from 48% */
+  border: 1px solid var(--border-primary);
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0 0 10px var(--glow-primary);
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.small-chart-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.05), transparent);
+  z-index: 1;
+  animation: chartScan 3s infinite 1s;
+  pointer-events: none;
+}
+
+.chart-container canvas,
+.small-chart-container canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Flex row for small charts */
+.charts-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+/* Data card styling */
+.data-card {
+  background: rgba(0, 0, 0, 0.5);
+  margin: 6px 0;
+  padding: 8px 12px;
+  border-radius: 3px;
+  border-left: 3px solid var(--text-primary);
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.data-card span {
+  color: var(--success-color);
+  font-weight: 500;
+}
+
+/* Key metrics display */
+.key-metric {
+  text-align: center;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  padding: 8px;
+  margin: 8px 0;
+  border: 1px solid var(--border-primary);
+}
+
+.key-metric .value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--success-color);
+}
+
+.key-metric .label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+/* Stats tables */
+.stats-table {
+  margin: 10px 0;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.8rem;
+}
+
+.stats-table table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.stats-table th {
+  text-align: left;
+  padding: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  color: var(--text-primary);
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+}
+
+.stats-table td {
+  padding: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+}
+
+.status {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.active {
+  background-color: var(--success-color);
+  box-shadow: 0 0 5px var(--success-color);
+}
+
+.warning {
+  background-color: var(--caution-color);
+  box-shadow: 0 0 5px var(--caution-color);
+}
+
+.critical {
+  background-color: var(--warning-color);
+  box-shadow: 0 0 5px var(--warning-color);
+}
+
+/* Header element for each panel */
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.panel-header .status-indicator {
+  font-size: 0.7rem;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 2px 5px;
+  border-radius: 3px;
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Progress bar */
+.progress-container {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  margin: 5px 0;
+  overflow: hidden;
+  height: 3px;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--success-color), var(--text-primary));
+  border-radius: 10px;
+  position: relative;
+}
+
+.progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: progress-glow 2s ease-in-out infinite;
+}
+
+@keyframes progress-glow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* 3D holographic effect */
+.hologram {
+  position: relative;
+  border: 1px solid var(--text-primary);
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1) inset;
+}
+
+.hologram::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    rgba(255, 255, 255, 0.02) 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+}
+
+/* Add scanning grid overlay to side panels */
+.left-box::after, .right-box::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px) 0 0 / 20px 20px,
+    linear-gradient(0deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px) 0 0 / 20px 20px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Add futuristic corner accents */
+.left-box::before {
+  content: '';
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border-top: 2px solid var(--text-primary);
+  border-left: 2px solid var(--text-primary);
+  top: 0;
+  left: 0;
+  z-index: 5;
+}
+
+.right-box::before {
+  content: '';
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border-top: 2px solid var(--text-primary);
+  border-left: 2px solid var(--text-primary);
+  top: 0;
+  left: 0;
+  z-index: 5;
+}
+
+/* Add bottom-right corner accents */
+.left-box::after {
+  content: '';
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border-bottom: 2px solid var(--text-primary);
+  border-right: 2px solid var(--text-primary);
+  bottom: 0;
+  right: 0;
+  z-index: 5;
+  background: none;
+}
+
+.right-box::after {
+  content: '';
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border-bottom: 2px solid var(--text-primary);
+  border-right: 2px solid var(--text-primary);
+  bottom: 0;
+  right: 0;
+  z-index: 5;
+  background: none;
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+  .container { flex-direction: column; }
+  .left-box, .right-box { width: 95%; height: auto; margin: 10px auto; }
+}
+
+/* old card */
