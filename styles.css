@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap');
-
+body{
+  overflow-x: hidden;
+}
 /* Black and white theme with minimal accent colors */
 :root {
   --bg-primary: #000000;
@@ -40,6 +42,7 @@ canvas#draw {
   font-family: 'Orbitron', sans-serif;
   padding: 20px;
   box-sizing: border-box;
+  overflow-x: hidden;
   pointer-events: none; /* Allow clicking through to the 3D scene */
 }
 
@@ -57,6 +60,7 @@ canvas#draw {
   flex-direction: column;
   max-height: 95vh;
   overflow-y: auto;
+  overflow-x: hidden;
   backdrop-filter: blur(5px);
   
   /* Initial positions for slide-in animation */
